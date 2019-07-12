@@ -364,6 +364,9 @@ void RobotsTxtParser::ParseAndEmitLine(int current_line, char* line) {
   char* string_key;
   char* value;
   if (!GetKeyAndValueFrom(&string_key, &value, line)) {
+    if (absl::StripAsciiWhitespace(line).size() > 0) {
+      handler_->HandleInvalidLine(current_line, line);
+    }
     return;
   }
 

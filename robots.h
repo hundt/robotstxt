@@ -63,6 +63,7 @@ class RobotsParseHandler {
   // Any other unrecognized name/value pairs.
   virtual void HandleUnknownAction(int line_num, absl::string_view action,
                                    absl::string_view value) = 0;
+  virtual void HandleInvalidLine(int line_num, absl::string_view line) = 0;
 };
 
 // Parses body of a robots.txt and emits parse callbacks. This will accept
@@ -94,6 +95,7 @@ class RobotsRewriter : public RobotsParseHandler {
   // Any other unrecognized name/value pairs.
   void HandleUnknownAction(int line_num, absl::string_view action,
                                    absl::string_view value) override;
+  void HandleInvalidLine(int line_num, absl::string_view line) override;
 
 protected:
   bool seen_agent_;         // True if processing agent rules.
@@ -190,6 +192,7 @@ class RobotsMatcher : protected RobotsParseHandler {
   void HandleSitemap(int line_num, absl::string_view value) override;
   void HandleUnknownAction(int line_num, absl::string_view action,
                            absl::string_view value) override;
+  void HandleInvalidLine(int line_num, absl::string_view line) {}
 
  protected:
   // Extract the matchable part of a user agent string, essentially stopping at

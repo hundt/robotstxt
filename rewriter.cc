@@ -152,4 +152,8 @@ void RobotsRewriter::HandleUnknownAction(int line_num, absl::string_view action,
   std::cerr << line_num << " # IGNORED Unknown action: " << action << " " << value << "\n";
 }
 
+void RobotsRewriter::HandleInvalidLine(int line_num, absl::string_view line) {
+  std::cerr << line_num << " # IGNORED Unparseable line: " << line << "\n";
+}
+
 }  // namespace googlebot

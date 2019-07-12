@@ -105,7 +105,6 @@ void RobotsRewriter::HandleUserAgent(int line_num,
     current_agents_.clear();
     current_agents_line_nums_.clear();
   }
-  CheckForIgnoredAgent();
   seen_agent_ = true;
 
   // Google-specific optimization: a '*' followed by space and more characters
@@ -150,6 +149,7 @@ void RobotsRewriter::HandleSitemap(int line_num, absl::string_view value) {
 void RobotsRewriter::HandleUnknownAction(int line_num, absl::string_view action,
                                         absl::string_view value) {
   seen_separator_ = true;
+  std::cerr << line_num << " # IGNORED Unknown action: " << action << " " << value << "\n";
 }
 
 }  // namespace googlebot

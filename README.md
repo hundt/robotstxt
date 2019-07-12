@@ -1,4 +1,4 @@
-# Forked version of Google Robots.txt Parser and Matcher Library
+# Forked version of Google Robots.txt Parser and Matcher Library (https://github.com/google/robotstxt)
 
 The repository contains Google's robots.txt parser and matcher as a C++ library
 (compliant to C++11) and a web server serving an API for dealing with robots.txt files.

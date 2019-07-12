@@ -11,27 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-// -----------------------------------------------------------------------------
-// File: robots_main.cc
-// -----------------------------------------------------------------------------
-//
-// Simple binary to assess whether a URL is accessible to a user-agent according
-// to records found in a local robots.txt file, based on Google's robots.txt
-// parsing and matching algorithms.
-// Usage:
-//     robots_main <local_path_to_robotstxt> <user_agent> <url>
-// Arguments:
-// local_path_to_robotstxt: local path to a file containing robots.txt records.
-//   For example: /home/users/username/robots.txt
-// user_agent: a token to be matched against records in the robots.txt.
-//   For example: Googlebot
-// url: a url to be matched against records in the robots.txt. The URL must be
-// %-encoded according to RFC3986.
-//   For example: https://example.com/accessible/url.html
-// Returns: Prints a sentence with verdict about whether 'user_agent' is allowed
-// to access 'url' based on records in 'local_path_to_robotstxt'.
-//
 #include <fstream>
 #include <iostream>
 
@@ -59,12 +38,12 @@ void ShowHelp(int argc, char** argv) {
               << " is allowed or disallowed by the given robots.txt file. "
               << std::endl << std::endl;
     std::cerr << "Usage: " << std::endl << "  " << argv[0]
-              << " <robots.txt filename> <user_agent> <URI>"
+              << " <robots.txt filename> <user_agent> <URI file>"
               << std::endl << std::endl;
-    std::cerr << "The URI must be %-encoded according to RFC3986."
+    std::cerr << "The URIs must be %-encoded according to RFC3986."
               << std::endl << std::endl;
     std::cerr << "Example: " << std::endl
-              << "  " << argv[0] << " robots.txt FooBot http://example.com/foo"
+              << "  " << argv[0] << " robots.txt FooBot /path/to/uris"
               << std::endl;
 }
 
@@ -98,10 +77,5 @@ int main(int argc, char** argv) {
     absl::StripAsciiWhitespace(&url);
     bool allowed = matcher.AllowedByRobots(robots_content, &user_agents, url);
     std::cout << (+allowed) << " " << url << std::endl;
-  }
-
-  if (robots_content.empty()) {
-    std::cout << "notice: robots file is empty so all user-agents are allowed"
-              << std::endl;
   }
 }

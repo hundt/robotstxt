@@ -8,6 +8,7 @@ cc_library(
     name = "robots",
     srcs = [
         "robots.cc",
+        "rewriter.cc",
     ],
     hdrs = [
         "robots.h",
@@ -30,8 +31,20 @@ cc_test(
 )
 
 cc_binary(
-    name = "robots_main",
-    srcs = ["robots_main.cc"],
+    name = "check_urls",
+    srcs = ["check_urls.cc"],
+    linkstatic = 1,
+    features = [ "fully_static_link" ],
+    deps = [
+        ":robots",
+    ],
+)
+
+cc_binary(
+    name = "check_robots",
+    srcs = ["check_robots.cc"],
+    linkstatic = 1,
+    features = [ "fully_static_link" ],
     deps = [
         ":robots",
     ],

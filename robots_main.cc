@@ -35,6 +35,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "absl/strings/ascii.h"
+
 #include "robots.h"
 
 bool LoadFile(const std::string& filename, std::string* result) {
@@ -93,6 +95,7 @@ int main(int argc, char** argv) {
     return 1;
   }
   for (std::string url; getline(url_file, url); ) {
+    absl::StripAsciiWhitespace(&url);
     bool allowed = matcher.AllowedByRobots(robots_content, &user_agents, url);
     std::cout << (+allowed) << " " << url << std::endl;
   }

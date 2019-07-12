@@ -87,11 +87,16 @@ int main(int argc, char** argv) {
   std::string user_agent = argv[2];
   std::vector<std::string> user_agents(1, user_agent);
   googlebot::RobotsMatcher matcher;
-  std::string url = argv[3];
-  bool allowed = matcher.AllowedByRobots(robots_content, &user_agents, url);
+  std::ifstream url_file(argv[3]);
+  if (url_file.rdstate() & std::ifstream::failbit) {
+    std::cerr << "failed to read URL file" << std::endl;
+    return 1;
+  }
+  for (std::string url; getline(url_file, url); ) {
+    bool allowed = matcher.AllowedByRobots(robots_content, &user_agents, url);
+    std::cout << (+allowed) << " " << url << std::endl;
+  }
 
-  std::cout << "user-agent '" << user_agent << "' with URI '" << argv[3]
-            << "': " << (allowed ? "ALLOWED" : "DISALLOWED") << std::endl;
   if (robots_content.empty()) {
     std::cout << "notice: robots file is empty so all user-agents are allowed"
               << std::endl;

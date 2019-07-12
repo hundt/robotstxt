@@ -99,7 +99,7 @@ protected:
   bool seen_agent_;         // True if processing agent rules.
   bool seen_separator_;     // True if saw any key: value pair.
   bool printed_current_agents_;
-  std::vector<absl::string_view> current_agents_;
+  std::vector<std::string> current_agents_;
   std::vector<int> current_agents_line_nums_;
 
   // Extract the matchable part of a user agent string, essentially stopping at

@@ -115,7 +115,8 @@ void RobotsRewriter::HandleUserAgent(int line_num,
       (user_agent.length() == 1 || isspace(user_agent[1]))) {
     current_agents_.push_back("*");
   } else {
-    current_agents_.push_back(ExtractUserAgent(user_agent));
+    const auto extracted = ExtractUserAgent(user_agent);
+    current_agents_.push_back(std::string(extracted.data(), extracted.size()));
   }
   printed_current_agents_ = false;
 }

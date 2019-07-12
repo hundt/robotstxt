@@ -5,11 +5,11 @@ The repository contains Google's robots.txt parser and matcher as a C++ library
 
 ## Building
 
-docker build -t robots:dev .
+`docker build -t robots:dev .`
 
 ## Running
 
-docker run -p 8080:80 robots:dev
+`docker run -p 8080:80 robots:dev`
 
 ## Usage
 

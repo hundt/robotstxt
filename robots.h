@@ -73,6 +73,44 @@ class RobotsParseHandler {
 void ParseRobotsTxt(absl::string_view robots_body,
                     RobotsParseHandler* parse_callback);
 
+class RobotsRewriter : public RobotsParseHandler {
+ public:
+  RobotsRewriter();
+  virtual ~RobotsRewriter();
+
+  // Disallow copying and assignment.
+  RobotsRewriter(const RobotsRewriter&) = delete;
+  RobotsRewriter& operator=(const RobotsRewriter&) = delete;
+
+  void HandleRobotsStart() override;
+  void HandleRobotsEnd() override;
+
+  void HandleUserAgent(int line_num, absl::string_view value) override;
+  void HandleAllow(int line_num, absl::string_view value) override;
+  void HandleDisallow(int line_num, absl::string_view value) override;
+
+  void HandleSitemap(int line_num, absl::string_view value) override;
+
+  // Any other unrecognized name/value pairs.
+  void HandleUnknownAction(int line_num, absl::string_view action,
+                                   absl::string_view value) override;
+
+protected:
+  bool seen_agent_;         // True if processing agent rules.
+  bool seen_separator_;     // True if saw any key: value pair.
+  bool printed_current_agents_;
+  std::vector<absl::string_view> current_agents_;
+  std::vector<int> current_agents_line_nums_;
+
+  // Extract the matchable part of a user agent string, essentially stopping at
+  // the first invalid character.
+  // Example: 'Googlebot/2.1' becomes 'Googlebot'
+  static absl::string_view ExtractUserAgent(absl::string_view user_agent);
+
+  void PrintCurrentAgents(bool wasIgnored);
+  void CheckForIgnoredAgent();
+};
+
 // RobotsMatcher - matches robots.txt against URLs.
 //
 // The Matcher uses a default match strategy for Allow/Disallow patterns which
